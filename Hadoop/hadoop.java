@@ -21,43 +21,13 @@ public class WordCount {
 
     public void map(Object key, Text value, Context context
                     ) throws IOException, InterruptedException {
-
-      StringTokenizer firstWordIterator = new StringTokenizer(value.toString());
-      StringTokenizer secondWordIterator = new StringTokenizer(value.toString());
-
-      if(secondWordIterator.hasMoreTokens())
-        secondWordIterator.nextToken();
-
-      while (firstWordIterator.hasMoreTokens())
-      {
-	      String pairWords = firstWordIterator.nextToken();
-
-        if(firstWordIterator.hasMoreTokens())
-          pairWords += firstWordIterator.nextToken();
-
-        if(firstWordIterator.hasMoreTokens())
-        {
-          pairWords += firstWordIterator.nextToken();
-          word.set(pairWords);
-          context.write(word, one);
-        }
-
-        pairWords = secondWordIterator.nextToken();
-        if(secondWordIterator.hasMoreTokens())
-        {
- 	        if(secondWordIterator.hasMoreTokens())
-            pairWords += secondWordIterator.nextToken();
-
-          if(secondWordIterator.hasMoreTokens())
-          {
-            pairWords += secondWordIterator.nextToken();
-            word.set(pairWords);
-            context.write(word, one);
-          }
-        }
+      StringTokenizer itr = new StringTokenizer(value.toString());
+      while (itr.hasMoreTokens()) {
+        word.set(itr.nextToken());
+        context.write(word, one);
       }
+    }
   }
-}
 
   public static class IntSumReducer
        extends Reducer<Text,IntWritable,Text,IntWritable> {
