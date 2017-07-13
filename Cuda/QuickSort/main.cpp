@@ -14,11 +14,9 @@ int main(){
 	int index;
 	int size;
 	size = n * sizeof(int);
-	// Allocate input vector h_arr in host memory
 
 	int* h_arr = (int*)malloc(size);
 
-	//// Allocate vector d_arr in device memory
 	int* d_arr;
 	cudaMalloc(&d_arr, size);
 
@@ -26,22 +24,13 @@ int main(){
 		printf("enter the %d number from arr",index);
 		scanf("%d",&h_arr[index]);
 	}
-
-		// Copy vector from host memory to device memory
-
+	
 	cudaMemcpy(d_arr, h_arr, size, cudaMemcpyHostToDevice);
 
-	//// Kernel invocation with one block of N * N * 1 threads
-	//and modifying the host code by replacing the <<<...>>> syntax introduced in Kernels
-
-	// Invoke kernel
 	quickSort <<< 1, n >>>(d_arr, 0, n-1);
 
-	// Copy result from device memory to host memory // h_C contains the result in host memory
-    //<<<blocksPerGrid, threadsPerBlock>>>
 	cudaMemcpy(h_arr, d_arr, size, cudaMemcpyDeviceToHost);
 
-	 // Free device memory
 	cudaFree(d_arr);
 
 }
